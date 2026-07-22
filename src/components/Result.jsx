@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Result({score, totalQuestion, handleRestart}) {
+function Result({score, totalQuestion, handleRestart, setShowReview}) {
   return (
     // <div className="container m-5">
     //     <h1 className='text-center'>Quiz Finished</h1>
@@ -15,6 +15,7 @@ function Result({score, totalQuestion, handleRestart}) {
     <h5 className="card-title">Result</h5>
     <p className="card-text">Your Score: {score} / {totalQuestion}</p>
     <a href="#" className="btn btn-primary" onClick={handleRestart}>Restart</a>
+    <a href="#" className="btn btn-primary m-4" onClick={()=>setShowReview(true)}>Review Answers</a>
   </div>
   <div className="card-footer text-body-secondary">
     Highest Score:......

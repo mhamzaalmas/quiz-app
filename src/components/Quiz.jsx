@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Question from "./Question";
 import Result from "./Result";
 import Loader from "./Loader";
-
+import Review from "./Review";
 
 function Quiz() {
   const [questions, setQuestions] = useState([]);
@@ -15,6 +15,8 @@ function Quiz() {
   const [answerSubmitted, setAnswerSubmitted] = useState(false);
   const [timeLeft, setTimeLeft] = useState(15);
   const [options, setOptions] = useState([]);
+  const [userAnswers, setUserAnswers] = useState([]);
+  const [showReview, setShowReview] = useState(false);
 
   const fetchQuestions = async () => {
     setLoading(true);
@@ -61,6 +63,7 @@ const handleNextQuestion = ()=>{
 
 const handleAnswer = (selectedAnswer) => {
   setSelectedAnswer(selectedAnswer);
+  setUserAnswers([...userAnswers, selectedAnswer]);
   setAnswerSubmitted(true)
   if(selectedAnswer === currentQuestion.correctAnswer){
     console.log(selectedAnswer);
@@ -92,6 +95,8 @@ const handleRestart = async()=>{
   setShowScore(false);
   setAnswerSubmitted(false);
   setSelectedAnswer(null);
+  setShowReview(false);
+  setUserAnswers([]);
 
   await fetchQuestions();
 }
@@ -143,12 +148,19 @@ const handleRestart = async()=>{
 // one problem is to alwas first option is correct now shuffles the option 
   // const currentQuestion = questions[currentQuestionIndex];
   // const options = [currentQuestion.correctAnswer, ...currentQuestion.incorrectAnswers,].sort(()=>Math.random()-0.5);
+if(showReview){
+  return(
+    <Review questions={questions} userAnswers={userAnswers} handleRestart={handleRestart}/>
+  );
+}
 
 if(showScore){
   return(
-     <Result score={score} totalQuestion={questions.length} handleRestart={handleRestart}/>
+     <Result score={score} totalQuestion={questions.length} handleRestart={handleRestart} setShowReview={setShowReview}/>
   )
 }
+
+
 
 // if(answerSubmitted){
 //   return(
