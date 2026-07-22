@@ -10,9 +10,9 @@ function App() {
 //  const [currentQuestion, setCurrentQuestion] = useState(0);
 //  const [score, setScore] = useState(0);
 //  const [loading, setLoading] = useState(true);
+
   return (
     <div>
-
 
       <Navbar/>
       <Quiz/>

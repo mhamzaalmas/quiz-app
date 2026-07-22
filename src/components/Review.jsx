@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Review({ questions, userAnswers, handleRestart }) {
+function Review({ questions, userAnswers, handleRestart, handleGoHome }) {
   return (
     <div className="container mt-4">
       <h3 className="text-center mb-4">Review Your Answers</h3>
@@ -36,8 +36,9 @@ function Review({ questions, userAnswers, handleRestart }) {
           </div>
         );
       })}
-      <div className="container">
+      <div className="container text-center d-flex justify-content-around">
          <button className="btn btn-primary" onClick={handleRestart}>Restart</button>
+         <button className="btn btn-primary" onClick={handleGoHome}>Go Home</button>
       </div>
     </div>
   );

@@ -3,13 +3,14 @@ import Question from "./Question";
 import Result from "./Result";
 import Loader from "./Loader";
 import Review from "./Review";
+import StartScreen from "./StartScreen";
 
 function Quiz() {
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [answerSubmitted, setAnswerSubmitted] = useState(false);
@@ -17,6 +18,9 @@ function Quiz() {
   const [options, setOptions] = useState([]);
   const [userAnswers, setUserAnswers] = useState([]);
   const [showReview, setShowReview] = useState(false);
+  const [startQuiz, setStartQuiz] = useState(false);
+  const [category, setCategory] = useState("");
+  const [questionCount, setQuestionCount] = useState(10);
 
   const fetchQuestions = async () => {
     setLoading(true);
@@ -24,7 +28,7 @@ function Quiz() {
     try{
        const response = await fetch(
       // "https://opentdb.com/api.php?amount=10&type=multiple"
-     "https://the-trivia-api.com/v2/questions?limit=10"
+     `https://the-trivia-api.com/v2/questions?limit=${questionCount}&categories=${category}`
     //  "https://opentdb.com/api.php?amount=10&type=multiple"
     );
 
@@ -84,10 +88,15 @@ const handleTimeOut = ()=>{
   setAnswerSubmitted(true);
 }
 
+const handleStartQuiz = async ()=>{
+  await fetchQuestions();
+  setStartQuiz(true);
+}
 
-  useEffect(() => {
-    fetchQuestions();
-  }, []);
+
+  // useEffect(() => {
+  //   fetchQuestions();
+  // }, []);
 
 const handleRestart = async()=>{
   setCurrentQuestionIndex(0);
@@ -97,10 +106,24 @@ const handleRestart = async()=>{
   setSelectedAnswer(null);
   setShowReview(false);
   setUserAnswers([]);
+  setTimeLeft(15);
 
   await fetchQuestions();
 }
 
+
+const handleGoHome = () => {
+  setStartQuiz(false);
+  setCurrentQuestionIndex(0);
+  setScore(0);
+  setShowScore(false);
+  setShowReview(false);
+  setAnswerSubmitted(false);
+  setSelectedAnswer(null);
+  setUserAnswers([]);
+  setTimeLeft(15);
+  setQuestions([]);
+};
 
 
  useEffect(() => {
@@ -144,21 +167,35 @@ const handleRestart = async()=>{
 
 
 
+if(!startQuiz){
+return(
+     <StartScreen
+      category={category}
+      setCategory={setCategory}
+      questionCount={questionCount}
+      setQuestionCount={setQuestionCount}
+      // setStartQuiz={setStartQuiz}
+      handleStartQuiz={handleStartQuiz}
+     />
 
+)
+  
+}
 // one problem is to alwas first option is correct now shuffles the option 
   // const currentQuestion = questions[currentQuestionIndex];
   // const options = [currentQuestion.correctAnswer, ...currentQuestion.incorrectAnswers,].sort(()=>Math.random()-0.5);
 if(showReview){
   return(
-    <Review questions={questions} userAnswers={userAnswers} handleRestart={handleRestart}/>
+    <Review questions={questions} userAnswers={userAnswers} handleRestart={handleRestart} handleGoHome={handleGoHome}/>
   );
 }
 
 if(showScore){
   return(
-     <Result score={score} totalQuestion={questions.length} handleRestart={handleRestart} setShowReview={setShowReview}/>
+     <Result score={score} totalQuestion={questions.length} handleRestart={handleRestart} setShowReview={setShowReview} handleGoHome={handleGoHome}/>
   )
 }
+
 
 
 
@@ -176,8 +213,20 @@ if(showScore){
       {/* <h3>{currentQuestion.question.text}</h3>
       {options.map((option, index)=>(<button key={index} onClick={()=>handleAnswer(option)}>{option}</button>))} */}
       {/* react uses the key to udentify the each item in a list like roll number of each student in class react know exactly which element is it */}
-      <Question currentQuestion={currentQuestion} options={options} handleAnswer={handleAnswer} currentQuestionIndex={currentQuestionIndex} score={score} totalQuestion={questions.length} selectedAnswer={selectedAnswer} answerSubmitted={answerSubmitted} timeLeft={timeLeft}/>
+      {/* <StartScreen/> */}
       
+         <Question
+      currentQuestion={currentQuestion}
+      options={options}
+      handleAnswer={handleAnswer}
+      currentQuestionIndex={currentQuestionIndex}
+      score={score}
+      totalQuestion={questions.length}
+      selectedAnswer={selectedAnswer}
+      answerSubmitted={answerSubmitted}
+      timeLeft={timeLeft}
+    />
+
 
       <div className="container d-flex align-content-center justify-content-center gap-2 mt-4 text-center" style={{ width: "40rem" }}>{answerSubmitted && (<button className="btn btn-primary" onClick={handleNextQuestion}>Next Question</button>)}</div> 
 
