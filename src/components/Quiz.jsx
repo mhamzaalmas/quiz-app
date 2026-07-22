@@ -5,7 +5,7 @@ import Loader from "./Loader";
 import Review from "./Review";
 import StartScreen from "./StartScreen";
 
-function Quiz() {
+function Quiz({startQuiz, setStartQuiz}) {
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -18,7 +18,7 @@ function Quiz() {
   const [options, setOptions] = useState([]);
   const [userAnswers, setUserAnswers] = useState([]);
   const [showReview, setShowReview] = useState(false);
-  const [startQuiz, setStartQuiz] = useState(false);
+  // const [startQuiz, setStartQuiz] = useState(false);
   const [category, setCategory] = useState("");
   const [questionCount, setQuestionCount] = useState(10);
 

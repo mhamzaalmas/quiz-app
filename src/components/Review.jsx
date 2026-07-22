@@ -36,7 +36,7 @@ function Review({ questions, userAnswers, handleRestart, handleGoHome }) {
           </div>
         );
       })}
-      <div className="container text-center d-flex justify-content-around">
+      <div className="container text-center d-flex justify-content-around m-3 p-3">
          <button className="btn btn-primary" onClick={handleRestart}>Restart</button>
          <button className="btn btn-primary" onClick={handleGoHome}>Go Home</button>
       </div>

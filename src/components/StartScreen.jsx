@@ -25,7 +25,7 @@ function StartScreen({category,setCategory,questionCount,setQuestionCount,handle
           </select>
         </div>
 
-        <a href="#" className="btn btn-primary" onClick={handleStartQuiz}>Start Quiz</a>
+        <button className="btn btn-primary" onClick={handleStartQuiz}>Start Quiz</button>
       </div>
     </div>
   );

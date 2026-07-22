@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Navbar({handleGoHome}) {
+function Navbar({setStartQuiz}) {
   return (
     <div>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -12,7 +12,7 @@ function Navbar({handleGoHome}) {
     <div className="collapse navbar-collapse" id="navbarNavDropdown">
       <ul className="navbar-nav">
         <li className="nav-item">
-          <a onClick={handleGoHome} className="nav-link active" aria-current="page" href="#">Home</a>
+          <a onClick={()=> setStartQuiz(false)} className="nav-link active" aria-current="page" href="#">Home</a>
         </li>
         <li className="nav-item">
           <a className="nav-link" href="#">Features</a>

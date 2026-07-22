@@ -10,12 +10,12 @@ function App() {
 //  const [currentQuestion, setCurrentQuestion] = useState(0);
 //  const [score, setScore] = useState(0);
 //  const [loading, setLoading] = useState(true);
-
+const [startQuiz, setStartQuiz] = useState(false);
   return (
     <div>
 
-      <Navbar/>
-      <Quiz/>
+      <Navbar setStartQuiz={setStartQuiz}/>
+      <Quiz setStartQuiz={setStartQuiz} startQuiz={startQuiz}/>
       
       
     </div>
