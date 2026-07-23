@@ -11,6 +11,9 @@ function Question({
   answerSubmitted,
   timeLeft
 }) {
+  if(!currentQuestion){
+    return null;
+  }
   return (
     <div className="container d-flex align-content-center justify-content-center mt-5">
       <div className="card shadow" style={{ width: "40rem" }}>

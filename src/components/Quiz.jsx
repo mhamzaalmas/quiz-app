@@ -9,7 +9,7 @@ import correct from "../assets/sounds/correct.mp3";
 import wrong from "../assets/sounds/wrong.mp3";
 import finish from "../assets/sounds/finish.mp3";
 import countdown from "../assets/sounds/countdown.mp3";
-
+import { motion, AnimatePresence } from "framer-motion";
 // audio object
 
 const correctAudio = new Audio(correct);
@@ -250,7 +250,9 @@ if(showScore){
 //     <button className="btn btn-primary btn-outline-primary" onClick={handleNextQuestion}>Next Question</button>
 //   )
 // }
-
+ if (!currentQuestion) {
+  return null;
+}
   return (
     <div>
       {/* <h2 className="text-center">Question {currentQuestionIndex+1} of {questions.length}</h2>
@@ -261,17 +263,32 @@ if(showScore){
       {/* react uses the key to udentify the each item in a list like roll number of each student in class react know exactly which element is it */}
       {/* <StartScreen/> */}
       
-         <Question
-      currentQuestion={currentQuestion}
-      options={options}
-      handleAnswer={handleAnswer}
-      currentQuestionIndex={currentQuestionIndex}
-      score={score}
-      totalQuestion={questions.length}
-      selectedAnswer={selectedAnswer}
-      answerSubmitted={answerSubmitted}
-      timeLeft={timeLeft}
-    />
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentQuestionIndex}
+          initial={{x:300, opacity:0}}
+          animate={{x:0,opacity:1}}
+          exit={{x:-300,opacity:0}}
+          transition={{duration:0.4}} 
+        >
+         
+          
+          <Question
+              currentQuestion={currentQuestion}
+              options={options}
+              handleAnswer={handleAnswer}
+              currentQuestionIndex={currentQuestionIndex}
+              score={score}
+              totalQuestion={questions.length}
+              selectedAnswer={selectedAnswer}
+              answerSubmitted={answerSubmitted}
+              timeLeft={timeLeft}
+            />
+        </motion.div>
+
+      </AnimatePresence>
+
+       
 
 
       <div className="container d-flex align-content-center justify-content-center gap-2 mt-4 text-center" style={{ width: "40rem" }}>{answerSubmitted && (<button className="btn btn-primary" onClick={handleNextQuestion}>Next Question</button>)}</div> 
