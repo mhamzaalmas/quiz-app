@@ -13,6 +13,12 @@ function StartScreen({category,setCategory,questionCount,setQuestionCount,handle
             <option value="science">Science</option>
             <option value="history">History</option>
             <option value="sports">Sports</option>
+            <option value="math">Math</option>
+            <option value="geography">Geography</option>
+            <option value="food_and_drink">Food & Drink</option>
+            <option value="music">Music</option>
+             <option value="sport_and_leisure">Sport & Leisure</option>
+            <option value="arts_and_literature">Arts & Literature</option>
           </select>
         </div>
 

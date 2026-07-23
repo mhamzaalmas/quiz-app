@@ -45,7 +45,7 @@ function Quiz({startQuiz, setStartQuiz}) {
     try{
        const response = await fetch(
       // "https://opentdb.com/api.php?amount=10&type=multiple"
-     `https://the-trivia-api.com/v2/questions?limit=${questionCount}&categories=${category}&difficulty=${difficulty}`
+     `https://the-trivia-api.com/v2/questions?limit=${questionCount}&categories=${category}&difficulties=${difficulty}`
     //  "https://opentdb.com/api.php?amount=10&type=multiple"
     );
 

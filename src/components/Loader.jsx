@@ -1,12 +1,15 @@
 import React from 'react';
+import Lottie from "lottie-react";
+import animation from "../assets/Loading.json";
 
 function Loader() {
   return (
-    <div className='container text-center'>
-      <div className="spinner-border" role="status">
-        <span className="visually-hidden">Loading...</span>
+    <div className='container text-center my-auto'>
+        <Lottie
+              animationData={animation}
+              loop={true}
+/>
         </div>
-    </div>
   );
 }
 
