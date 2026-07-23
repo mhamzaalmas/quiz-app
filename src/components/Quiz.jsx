@@ -4,6 +4,19 @@ import Result from "./Result";
 import Loader from "./Loader";
 import Review from "./Review";
 import StartScreen from "./StartScreen";
+// import { useRef } from "react";
+import correct from "../assets/sounds/correct.mp3";
+import wrong from "../assets/sounds/wrong.mp3";
+import finish from "../assets/sounds/finish.mp3";
+import countdown from "../assets/sounds/countdown.mp3";
+
+// audio object
+
+const correctAudio = new Audio(correct);
+const wrongAudio = new Audio(wrong);
+const finishAudio = new Audio(finish);
+const countdownAudio = new Audio(countdown);
+
 
 function Quiz({startQuiz, setStartQuiz}) {
   const [questions, setQuestions] = useState([]);
@@ -21,6 +34,10 @@ function Quiz({startQuiz, setStartQuiz}) {
   // const [startQuiz, setStartQuiz] = useState(false);
   const [category, setCategory] = useState("");
   const [questionCount, setQuestionCount] = useState(10);
+  const [difficulty, setDifficultyLevel] = useState("");
+
+// const correctAudio = useRef(new Audio(correct));
+
 
   const fetchQuestions = async () => {
     setLoading(true);
@@ -28,7 +45,7 @@ function Quiz({startQuiz, setStartQuiz}) {
     try{
        const response = await fetch(
       // "https://opentdb.com/api.php?amount=10&type=multiple"
-     `https://the-trivia-api.com/v2/questions?limit=${questionCount}&categories=${category}`
+     `https://the-trivia-api.com/v2/questions?limit=${questionCount}&categories=${category}&difficulty=${difficulty}`
     //  "https://opentdb.com/api.php?amount=10&type=multiple"
     );
 
@@ -62,6 +79,8 @@ const handleNextQuestion = ()=>{
     setTimeLeft(15);
   }else{
     setShowScore(true);
+    finishAudio.currentTime=0;
+    finishAudio.play();
   }
 }
 
@@ -70,9 +89,14 @@ const handleAnswer = (selectedAnswer) => {
   setUserAnswers([...userAnswers, selectedAnswer]);
   setAnswerSubmitted(true)
   if(selectedAnswer === currentQuestion.correctAnswer){
+    correctAudio.currentTime=0;
+    correctAudio.play();
     console.log(selectedAnswer);
     // setScore(score+1);
     setScore((prevScore) => prevScore + 1);
+  }else{
+    wrongAudio.currentTime=0;
+    wrongAudio.play();
   }
   // setCurrentQuestionIndex(currentQuestionIndex+1);
   // const nextQuestion = currentQuestionIndex+1;
@@ -89,6 +113,16 @@ const handleTimeOut = ()=>{
 }
 
 const handleStartQuiz = async ()=>{
+  setCurrentQuestionIndex(0);
+  setScore(0);
+  setShowScore(false);
+  setShowReview(false);
+  setSelectedAnswer(null);
+  setAnswerSubmitted(false);
+  setUserAnswers([]);
+  setTimeLeft(15);
+
+// before fetching reset all quiz related state 
   await fetchQuestions();
   setStartQuiz(true);
 }
@@ -126,7 +160,10 @@ const handleGoHome = () => {
 };
 
 
+
+
  useEffect(() => {
+  if(!startQuiz || answerSubmitted) return;
   const timer = setInterval(() => {
     setTimeLeft((prevTime) => {
       if (prevTime <= 1) {
@@ -140,10 +177,15 @@ const handleGoHome = () => {
   }, 1000);
 
   return () => clearInterval(timer);
-}, [currentQuestionIndex, answerSubmitted]);
+}, [currentQuestionIndex, answerSubmitted, startQuiz]);
 
 
-
+useEffect(()=>{
+  if(timeLeft === 5 && !answerSubmitted){
+    countdownAudio.currentTime=0;
+    countdownAudio.play();
+  }
+},[timeLeft,answerSubmitted]);
 
 
   const currentQuestion = questions[currentQuestionIndex];
@@ -176,6 +218,9 @@ return(
       setQuestionCount={setQuestionCount}
       // setStartQuiz={setStartQuiz}
       handleStartQuiz={handleStartQuiz}
+      difficulty={difficulty}
+      setDifficultyLevel={setDifficultyLevel}
+
      />
 
 )
@@ -194,6 +239,7 @@ if(showScore){
   return(
      <Result score={score} totalQuestion={questions.length} handleRestart={handleRestart} setShowReview={setShowReview} handleGoHome={handleGoHome}/>
   )
+  // finishAudio.play();
 }
 
 

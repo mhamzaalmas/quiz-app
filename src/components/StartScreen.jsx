@@ -1,6 +1,6 @@
 import React from 'react';
 
-function StartScreen({category,setCategory,questionCount,setQuestionCount,handleStartQuiz}) {
+function StartScreen({category,setCategory,questionCount,setQuestionCount,handleStartQuiz,setDifficultyLevel,difficulty}) {
   return (
     <div className="card w-50 mx-auto mt-5 text-center">
       <div className="card-body">
@@ -19,13 +19,23 @@ function StartScreen({category,setCategory,questionCount,setQuestionCount,handle
         <div className="mb-3">
           <select className="form-select" defaultValue="" onChange={(e)=> setQuestionCount(e.target.value)}>
             <option value="" disabled>Select Number of Questions</option>
+            <option value="5">5</option>
             <option value="10">10</option>
             <option value="15">15</option>
             <option value="20">20</option>
           </select>
         </div>
 
-        <button className="btn btn-primary" onClick={handleStartQuiz}>Start Quiz</button>
+        <div className="mb-3">
+          <select className="form-select" defaultValue="" onChange={(e)=> setDifficultyLevel(e.target.value)}>
+            <option value="" disabled>Select the difficulty level</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+
+        <button className="btn btn-primary" onClick={handleStartQuiz} disabled={!category || !difficulty || !questionCount}>Start Quiz</button>
       </div>
     </div>
   );
